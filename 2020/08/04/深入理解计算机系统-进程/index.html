@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="踏雪,taxuexunshang@gmail.com"><title>深入理解计算机系统-进程 · 踏雪寻殇的博客</title><meta name="description" content="CS:APP被业内人员誉为CS专业必读,但其部分章节对于开发作用甚微,阅读了30%左右机器码与汇编的章节,深感该章节与本人无益,故跳过
+
+进程
+进程的经典定义是一个执行中程序的实例
+
+进程就是运行中程序的实例,通过上下文切换,交替被CPU调用
+逻辑控制流进程为每个进程提供了一种假象,即每个进程都在独"><meta name="keywords" content="Hexo,HTML,CSS,android,Linux"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 4.2.1"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">踏雪寻殇的博客</a></h3><div class="description"><p>逝者如斯夫,不舍昼夜</p></div></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me" target="_blank" rel="noopener"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole" target="_blank" rel="noopener"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/images/favicon.jpeg"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>深入理解计算机系统-进程</a></h3></div><div class="post-content"><blockquote>
+<p>CS:APP被业内人员誉为CS专业必读,但其部分章节对于开发作用甚微,阅读了30%左右机器码与汇编的章节,深感该章节与本人无益,故跳过</p>
+</blockquote>
+<h4 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h4><blockquote>
+<p>进程的经典定义是一个执行中程序的实例</p>
+</blockquote>
+<p>进程就是运行中程序的实例,通过上下文切换,交替被CPU调用</p>
+<h4 id="逻辑控制流"><a href="#逻辑控制流" class="headerlink" title="逻辑控制流"></a>逻辑控制流</h4><p>进程为每个进程提供了一种假象,即<strong>每个进程都在独立的使用CPU</strong>.通过绘制逻辑控制流图,可分辨两个进程是否为并行进程.</p>
+<p>进程是轮流使用处理器的,根据<strong>操作系统的调度策略</strong>,结合<strong>时间片轮转</strong>方式,进行调用.</p>
+<h4 id="并发流"><a href="#并发流" class="headerlink" title="并发流"></a>并发流</h4><p>一个逻辑流的执行在时间上与另一个流重叠,称为并发流,也称这两个流是并发允许的.对于并发执行的界定</p>
+<p><strong>进程B的开始时刻</strong>在<strong>进程A的总执行时间中,</strong>则说这两个进程是并发的.</p>
+<p><strong>并发流与处理器核数与计算机数无关</strong></p>
+<h5 id="并行流"><a href="#并行流" class="headerlink" title="并行流"></a>并行流</h5><p>并行流是并发流集合的真子集,当两个流并发的运行在不同的核上,我们称它们是并行的.亦称之为并行流.</p>
+<h4 id="私有地址空间"><a href="#私有地址空间" class="headerlink" title="私有地址空间"></a>私有地址空间</h4><p>进程也为每个程序提供一种假象,即每个进程独占地址空间,在编程中极大的简化了开发人员的开发流程.每个进程会分配属于自己的地址空间,别的进程无法访问,严谨的说,应是除子进程外别的进程无法访问.</p>
+<p>操作系统给用户程序分配的地址空间,位于总内存空间的低地址区中,内核占据内存空间的高地址区.</p>
+<h4 id="内核态与用户态"><a href="#内核态与用户态" class="headerlink" title="内核态与用户态"></a>内核态与用户态</h4><p>为了给操作系统内核提供绝对安全的环境.处理区必须提供一种机制,<strong>限制应用可执行的指令及能存取的地址空间</strong></p>
+<p>处理器通常使用<strong>控制寄存器的模式位</strong>来提供这种功能,该寄存器描述当前进程是否具有此特权,设置了模式位后,进程就允许在内核模式中,可允许所有指令,访问内存中的任何位置.</p>
+<p>未设置模式位时,进程运行在用户模式中,用户模式不允许使用特权指令,用户程序必须通过操作系统提供的接口访问内核的代码与数据.</p>
+<p>进程从用户态进入内核态,唯一方法是通过中断,故障,或陷入系统调用的方式.</p>
+<p>Linux提供了一种聪明的机制,将<strong>内核的数据以文件形式进行输出,用户可通过读取文件获取内核的数据.</strong></p>
+<h4 id="上下文切换"><a href="#上下文切换" class="headerlink" title="上下文切换"></a>上下文切换</h4><blockquote>
+<p>在进行上下文切换时,会将上个程序当前状态完全保存,相当于虚拟机快照.</p>
+</blockquote>
+<p>操作系统使用一种称为<strong>上下文切换</strong>的机制,来对进程进行切换,又称进程调度,由<strong>内核的调度器进行调度</strong>.</p>
+<h4 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h4><h5 id="获取进程ID"><a href="#获取进程ID" class="headerlink" title="获取进程ID"></a>获取进程ID</h5><p>每个<strong>进程都有自己唯一且非0的ID(PID)</strong></p>
+<h5 id="创建与终止进程"><a href="#创建与终止进程" class="headerlink" title="创建与终止进程"></a>创建与终止进程</h5><p>从程序员的角度,进程总是处于三种状态之一:</p>
+<ol>
+<li>运行</li>
+<li>停止</li>
+<li>终止</li>
+</ol>
+<p>父进程通过<strong>调用fork函数创建一个新的子进程</strong>.子进程会得到与父进程<strong>相同的用户级地址空间(指结构上相同,地址仍不同,仅是获得了父进程的副本)</strong>,当父进程调用fork时,子进程可以读写打开父进程的任何文件,它们拥有不同的PID.</p>
+<h5 id="僵尸进程与孤儿进程"><a href="#僵尸进程与孤儿进程" class="headerlink" title="僵尸进程与孤儿进程"></a>僵尸进程与孤儿进程</h5><h6 id="僵尸进程"><a href="#僵尸进程" class="headerlink" title="僵尸进程"></a>僵尸进程</h6><p>当一个进程由于某种原因终止而未被内核立即回收,保持终止状态,等待被它的父进程回收.这样的进程成为僵尸进程.</p>
+<h6 id="孤儿进程"><a href="#孤儿进程" class="headerlink" title="孤儿进程"></a>孤儿进程</h6><p>若一个进程没有直接父进程,当其终止时,内核会安排init进程成为该孤儿进程的养父,init进程PID为1,由操作系统内核创建,是所有进程的祖先.</p>
+<p>若父进程未回收子进程就终止了,该子进程也会被init进程回收.</p>
+<h4 id="加载并运行程序"><a href="#加载并运行程序" class="headerlink" title="加载并运行程序"></a>加载并运行程序</h4><p>在设计应用程序时,主函数运行时需要<strong>加载环境变量列表envp与带参列表argv</strong>.如Java主函数:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">	<span class="comment">//其中的args就是运行时传入的参数列表</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>亦或者是标准的C++主函数:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> *argv[],<span class="keyword">char</span> *envp[])</span></span>&#123;</span><br><span class="line">	<span class="comment">//分别记录参数个数 参数数组 环境参数数组</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2020-08-04</span><i class="fa fa-tag"></i><a class="tag" href="/tags/操作系统/" title="操作系统">操作系统 </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2020/08/04/深入理解计算机系统-进程/,踏雪寻殇的博客,深入理解计算机系统-进程,;" target="_blank" rel="noopener"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2020/08/03/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F-%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%A4%84%E7%90%86/" title="深入理解计算机系统-信息的表示与处理">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
